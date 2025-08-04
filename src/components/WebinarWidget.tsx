@@ -33,7 +33,7 @@ const WebinarWidget = () => {
     const timer = setTimeout(() => {
       setShowNotification(true);
       setAutoTriggered(true);
-    }, 30000); // 30 seconds
+    }, 5000); // 5 seconds
 
     return () => clearTimeout(timer);
   }, []);
