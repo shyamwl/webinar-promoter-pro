@@ -12,19 +12,33 @@ const WebinarWidget = () => {
     return day >= 1 && day <= 5; // Monday to Friday
   };
 
-  const getCurrentISTTime = () => {
-    const now = new Date();
-    const istTime = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }));
-    return istTime;
+  const getUserLocalTime = () => {
+    return new Date();
   };
 
-  const formatTime = (date: Date) => {
+  const formatLocalTime = (date: Date) => {
     return date.toLocaleTimeString("en-US", {
       hour: "numeric",
       minute: "2-digit",
-      hour12: true,
-      timeZone: "Asia/Kolkata"
+      hour12: true
     });
+  };
+
+  const getWebinarTimeInUserTimezone = () => {
+    // Webinar is at 8 PM IST
+    const today = new Date();
+    const webinarIST = new Date(today.toDateString() + " 20:00:00 GMT+0530");
+    return webinarIST;
+  };
+
+  const formatWebinarTime = () => {
+    const webinarTime = getWebinarTimeInUserTimezone();
+    const userTime = webinarTime.toLocaleTimeString("en-US", {
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true
+    });
+    return `${userTime} (8:00 PM IST)`;
   };
 
   useEffect(() => {
@@ -98,7 +112,7 @@ const WebinarWidget = () => {
               <div className="space-y-2 mb-4">
                 <div className="flex items-center gap-2 text-sm text-card-foreground">
                   <Clock className="h-4 w-4 text-webinar-primary" />
-                  <span>Today at 8:00 PM IST</span>
+                  <span>Today at {formatWebinarTime()}</span>
                 </div>
                 <div className="flex items-center gap-2 text-sm text-card-foreground">
                   <Users className="h-4 w-4 text-webinar-primary" />
@@ -123,7 +137,7 @@ const WebinarWidget = () => {
               </div>
 
               <p className="text-xs text-muted-foreground mt-3 text-center">
-                Current time: {formatTime(getCurrentISTTime())} IST
+                Current time: {formatLocalTime(getUserLocalTime())}
               </p>
             </div>
           </div>
