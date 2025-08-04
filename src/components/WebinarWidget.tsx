@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 
 const WebinarWidget = () => {
   const [showNotification, setShowNotification] = useState(false);
-  const [showWidget, setShowWidget] = useState(true);
+  const [autoTriggered, setAutoTriggered] = useState(false);
 
   const isWeekday = () => {
     const today = new Date();
@@ -32,6 +32,7 @@ const WebinarWidget = () => {
 
     const timer = setTimeout(() => {
       setShowNotification(true);
+      setAutoTriggered(true);
     }, 30000); // 30 seconds
 
     return () => clearTimeout(timer);
@@ -47,8 +48,8 @@ const WebinarWidget = () => {
     setShowNotification(false);
   };
 
-  const handleToggleWidget = () => {
-    setShowWidget(!showWidget);
+  const handleToggleNotification = () => {
+    setShowNotification(!showNotification);
   };
 
   if (!isWeekday()) return null;
@@ -58,7 +59,7 @@ const WebinarWidget = () => {
       {/* Chat Icon Widget */}
       <div className="fixed bottom-6 right-6 z-50">
         <Button
-          onClick={handleToggleWidget}
+          onClick={handleToggleNotification}
           className="h-14 w-14 rounded-full bg-gradient-webinar hover:bg-gradient-accent shadow-elegant animate-pulse-glow transition-all duration-300 hover:scale-110"
         >
           <MessageCircle className="h-6 w-6 text-white animate-float" />
