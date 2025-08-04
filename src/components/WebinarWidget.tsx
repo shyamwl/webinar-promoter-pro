@@ -25,10 +25,13 @@ const WebinarWidget = () => {
   };
 
   const getWebinarTimeInUserTimezone = () => {
-    // Webinar is at 8 PM IST
+    // Webinar is at 8 PM IST (UTC+5:30)
     const today = new Date();
-    const webinarIST = new Date(today.toDateString() + " 20:00:00 GMT+0530");
-    return webinarIST;
+    // Create a date object for 8 PM IST today
+    const istOffset = 5.5 * 60; // IST is UTC+5:30 in minutes
+    const utcTime = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 20, 0, 0); // 8 PM today in local time
+    const istTime = new Date(utcTime.getTime() - (istOffset - today.getTimezoneOffset()) * 60000);
+    return istTime;
   };
 
   const formatWebinarTime = () => {
