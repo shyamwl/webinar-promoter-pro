@@ -44,6 +44,22 @@ const WebinarWidget = () => {
     return `${userTime} (8:00 PM IST)`;
   };
 
+  const isWebinarLive = () => {
+    const now = new Date();
+    const today = new Date();
+    
+    // Create IST times for 8:00 PM and 8:30 PM
+    const istOffset = 5.5 * 60; // IST is UTC+5:30 in minutes
+    const webinarStart = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 20, 0, 0); // 8 PM IST
+    const webinarEnd = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 20, 30, 0); // 8:30 PM IST
+    
+    // Convert to user's local time
+    const localStart = new Date(webinarStart.getTime() - (istOffset - now.getTimezoneOffset()) * 60000);
+    const localEnd = new Date(webinarEnd.getTime() - (istOffset - now.getTimezoneOffset()) * 60000);
+    
+    return now >= localStart && now <= localEnd;
+  };
+
   useEffect(() => {
     if (!isWeekday()) return;
 
@@ -102,42 +118,87 @@ const WebinarWidget = () => {
 
             {/* Content */}
             <div className="relative z-10">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="h-10 w-10 rounded-full bg-gradient-webinar flex items-center justify-center animate-bounce-in">
-                  <Calendar className="h-5 w-5 text-white" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-card-foreground">Live Webinar Today!</h3>
-                  <p className="text-sm text-muted-foreground">Don't miss out</p>
-                </div>
-              </div>
+              {isWebinarLive() ? (
+                // Live webinar state
+                <>
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="h-10 w-10 rounded-full bg-gradient-webinar flex items-center justify-center animate-pulse">
+                      <div className="h-3 w-3 bg-red-500 rounded-full animate-pulse"></div>
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-card-foreground">🔴 Live Webinar in Progress</h3>
+                      <p className="text-sm text-muted-foreground">Join now to learn about our product!</p>
+                    </div>
+                  </div>
 
-              <div className="space-y-2 mb-4">
-                <div className="flex items-center gap-2 text-sm text-card-foreground">
-                  <Clock className="h-4 w-4 text-webinar-primary" />
-                  <span>Today at {formatWebinarTime()}</span>
-                </div>
-                <div className="flex items-center gap-2 text-sm text-card-foreground">
-                  <Users className="h-4 w-4 text-webinar-primary" />
-                  <span>Join hundreds of participants</span>
-                </div>
-              </div>
+                  <div className="space-y-2 mb-4">
+                    <div className="flex items-center gap-2 text-sm text-card-foreground">
+                      <Clock className="h-4 w-4 text-red-500" />
+                      <span>Live until 8:30 PM IST</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm text-card-foreground">
+                      <Users className="h-4 w-4 text-red-500" />
+                      <span>Hundreds are watching live</span>
+                    </div>
+                  </div>
 
-              <div className="flex gap-2">
-                <Button
-                  onClick={handleJoinWebinar}
-                  className="flex-1 bg-gradient-webinar hover:bg-gradient-accent text-white font-medium"
-                >
-                  Join Now
-                </Button>
-                <Button
-                  variant="outline"
-                  onClick={handleCloseNotification}
-                  className="px-3"
-                >
-                  Later
-                </Button>
-              </div>
+                  <div className="flex gap-2">
+                    <Button
+                      onClick={handleJoinWebinar}
+                      className="flex-1 bg-red-600 hover:bg-red-700 text-white font-medium animate-pulse"
+                    >
+                      🔴 Join Live Webinar
+                    </Button>
+                    <Button
+                      variant="outline"
+                      onClick={handleCloseNotification}
+                      className="px-3"
+                    >
+                      Later
+                    </Button>
+                  </div>
+                </>
+              ) : (
+                // Upcoming webinar state
+                <>
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="h-10 w-10 rounded-full bg-gradient-webinar flex items-center justify-center animate-bounce-in">
+                      <Calendar className="h-5 w-5 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-card-foreground">Live Webinar Today!</h3>
+                      <p className="text-sm text-muted-foreground">Don't miss out</p>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2 mb-4">
+                    <div className="flex items-center gap-2 text-sm text-card-foreground">
+                      <Clock className="h-4 w-4 text-webinar-primary" />
+                      <span>Today at {formatWebinarTime()}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm text-card-foreground">
+                      <Users className="h-4 w-4 text-webinar-primary" />
+                      <span>Join hundreds of participants</span>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-2">
+                    <Button
+                      onClick={handleJoinWebinar}
+                      className="flex-1 bg-gradient-webinar hover:bg-gradient-accent text-white font-medium"
+                    >
+                      Join Now
+                    </Button>
+                    <Button
+                      variant="outline"
+                      onClick={handleCloseNotification}
+                      className="px-3"
+                    >
+                      Later
+                    </Button>
+                  </div>
+                </>
+              )}
 
               <p className="text-xs text-muted-foreground mt-3 text-center">
                 Current time: {formatLocalTime(getUserLocalTime())}
