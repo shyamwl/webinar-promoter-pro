@@ -1,25 +1,22 @@
 import { useState, useEffect } from "react";
 import { MessageCircle, X, Calendar, Clock, Users, Radio } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
 interface WebinarWidgetProps {
   isLivePreview?: boolean;
 }
-
-const WebinarWidget = ({ isLivePreview = false }: WebinarWidgetProps) => {
+const WebinarWidget = ({
+  isLivePreview = false
+}: WebinarWidgetProps) => {
   const [showNotification, setShowNotification] = useState(false);
   const [autoTriggered, setAutoTriggered] = useState(false);
-
   const isWeekday = () => {
     const today = new Date();
     const day = today.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
     return day >= 1 && day <= 5; // Monday to Friday
   };
-
   const getUserLocalTime = () => {
     return new Date();
   };
-
   const formatLocalTime = (date: Date) => {
     return date.toLocaleTimeString("en-US", {
       hour: "numeric",
@@ -27,7 +24,6 @@ const WebinarWidget = ({ isLivePreview = false }: WebinarWidgetProps) => {
       hour12: true
     });
   };
-
   const getWebinarTimeInUserTimezone = () => {
     // Webinar is at 8 PM IST (UTC+5:30)
     const today = new Date();
@@ -37,7 +33,6 @@ const WebinarWidget = ({ isLivePreview = false }: WebinarWidgetProps) => {
     const istTime = new Date(utcTime.getTime() - (istOffset - today.getTimezoneOffset()) * 60000);
     return istTime;
   };
-
   const formatWebinarTime = () => {
     const webinarTime = getWebinarTimeInUserTimezone();
     const userTime = webinarTime.toLocaleTimeString("en-US", {
@@ -47,26 +42,22 @@ const WebinarWidget = ({ isLivePreview = false }: WebinarWidgetProps) => {
     });
     return `${userTime} (8:00 PM IST)`;
   };
-
   const isWebinarLive = () => {
     const now = new Date();
     const today = new Date();
-    
+
     // Create IST times for 8:00 PM and 8:30 PM
     const istOffset = 5.5 * 60; // IST is UTC+5:30 in minutes
     const webinarStart = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 20, 0, 0); // 8 PM IST
     const webinarEnd = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 20, 30, 0); // 8:30 PM IST
-    
+
     // Convert to user's local time
     const localStart = new Date(webinarStart.getTime() - (istOffset - now.getTimezoneOffset()) * 60000);
     const localEnd = new Date(webinarEnd.getTime() - (istOffset - now.getTimezoneOffset()) * 60000);
-    
     return now >= localStart && now <= localEnd;
   };
-
   useEffect(() => {
     if (!isWeekday()) return;
-
     const timer = setTimeout(() => {
       setShowNotification(true);
       setAutoTriggered(true);
@@ -74,57 +65,42 @@ const WebinarWidget = ({ isLivePreview = false }: WebinarWidgetProps) => {
 
     return () => clearTimeout(timer);
   }, []);
-
   const handleJoinWebinar = () => {
     // Add your webinar link logic here
     window.open("https://your-webinar-link.com", "_blank");
     setShowNotification(false);
   };
-
   const handleCloseNotification = () => {
     setShowNotification(false);
   };
-
   const handleToggleNotification = () => {
     setShowNotification(!showNotification);
   };
-
   if (!isWeekday()) return null;
-
-  return (
-    <>
+  return <>
       {/* Chat Icon Widget */}
       <div className="fixed bottom-6 right-6 z-50">
-        <Button
-          onClick={handleToggleNotification}
-          className="h-14 w-14 rounded-full bg-gradient-webinar hover:bg-gradient-accent shadow-elegant animate-pulse-glow transition-all duration-300 hover:scale-110"
-        >
+        <Button onClick={handleToggleNotification} className="h-14 w-14 rounded-full bg-gradient-webinar hover:bg-gradient-accent shadow-elegant animate-pulse-glow transition-all duration-300 hover:scale-110">
           <MessageCircle className="h-6 w-6 text-white animate-float" />
         </Button>
       </div>
 
       {/* Webinar Notification Popup */}
-      {showNotification && (
-        <div className="fixed bottom-24 right-6 z-50 animate-slide-up">
+      {showNotification && <div className="fixed bottom-24 right-6 z-50 animate-slide-up">
           <div className="bg-card border border-border rounded-xl shadow-elegant p-6 max-w-sm relative overflow-hidden">
             {/* Background gradient overlay */}
             <div className="absolute inset-0 bg-gradient-webinar opacity-5 rounded-xl"></div>
             
             {/* Close button */}
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={handleCloseNotification}
-              className="absolute top-2 right-2 h-6 w-6 rounded-full hover:bg-muted"
-            >
+            <Button variant="ghost" size="sm" onClick={handleCloseNotification} className="absolute top-2 right-2 h-6 w-6 rounded-full hover:bg-muted">
               <X className="h-4 w-4" />
             </Button>
 
             {/* Content */}
             <div className="relative z-10">
-              {(isLivePreview || isWebinarLive()) ? (
-                // Live webinar state
-                <>
+              {isLivePreview || isWebinarLive() ?
+          // Live webinar state
+          <>
                   <div className="flex items-center gap-3 mb-4">
                     <div className="h-10 w-10 rounded-full bg-gradient-webinar flex items-center justify-center">
                       <Radio className="h-5 w-5 text-white animate-pulse" />
@@ -152,24 +128,16 @@ const WebinarWidget = ({ isLivePreview = false }: WebinarWidgetProps) => {
                   </div>
 
                   <div className="flex gap-2">
-                    <Button
-                      onClick={handleJoinWebinar}
-                      className="flex-1 bg-red-600 hover:bg-red-700 text-white font-medium"
-                    >
+                    <Button onClick={handleJoinWebinar} className="flex-1 bg-red-600 hover:bg-red-700 text-white font-medium">
                       Join Live Webinar
                     </Button>
-                    <Button
-                      variant="outline"
-                      onClick={handleCloseNotification}
-                      className="px-3"
-                    >
+                    <Button variant="outline" onClick={handleCloseNotification} className="px-3">
                       Later
                     </Button>
                   </div>
-                </>
-              ) : (
-                // Upcoming webinar state
-                <>
+                </> :
+          // Upcoming webinar state
+          <>
                   <div className="flex items-center gap-3 mb-4">
                     <div className="h-10 w-10 rounded-full bg-gradient-webinar flex items-center justify-center animate-bounce-in">
                       <Calendar className="h-5 w-5 text-white" />
@@ -192,32 +160,21 @@ const WebinarWidget = ({ isLivePreview = false }: WebinarWidgetProps) => {
                   </div>
 
                   <div className="flex gap-2">
-                    <Button
-                      onClick={handleJoinWebinar}
-                      className="flex-1 bg-gradient-webinar hover:bg-gradient-accent text-white font-medium"
-                    >
+                    <Button onClick={handleJoinWebinar} className="flex-1 bg-gradient-webinar hover:bg-gradient-accent text-white font-medium">
                       Join Now
                     </Button>
-                    <Button
-                      variant="outline"
-                      onClick={handleCloseNotification}
-                      className="px-3"
-                    >
+                    <Button variant="outline" onClick={handleCloseNotification} className="px-3">
                       Later
                     </Button>
                   </div>
-                </>
-              )}
+                </>}
 
               <p className="text-xs text-muted-foreground mt-3 text-center">
                 Current time: {formatLocalTime(getUserLocalTime())}
               </p>
             </div>
           </div>
-        </div>
-      )}
-    </>
-  );
+        </div>}
+    </>;
 };
-
 export default WebinarWidget;
