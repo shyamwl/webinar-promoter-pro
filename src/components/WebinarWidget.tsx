@@ -131,7 +131,7 @@ const WebinarWidget = ({ isLivePreview = false }: WebinarWidgetProps) => {
                     </div>
                     <div>
                       <div className="flex items-center gap-2">
-                        <h3 className="font-semibold text-card-foreground">🔴 Live Webinar in Progress</h3>
+                        <h3 className="font-semibold text-card-foreground">Live Webinar in Progress</h3>
                         <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800 animate-pulse">
                           LIVE
                         </span>
