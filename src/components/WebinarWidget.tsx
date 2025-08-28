@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { MessageCircle, X, Calendar, Clock, Users } from "lucide-react";
+import { MessageCircle, X, Calendar, Clock, Users, Radio } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface WebinarWidgetProps {
@@ -126,11 +126,16 @@ const WebinarWidget = ({ isLivePreview = false }: WebinarWidgetProps) => {
                 // Live webinar state
                 <>
                   <div className="flex items-center gap-3 mb-4">
-                    <div className="h-10 w-10 rounded-full bg-gradient-webinar flex items-center justify-center animate-pulse">
-                      <div className="h-3 w-3 bg-red-500 rounded-full animate-pulse"></div>
+                    <div className="h-10 w-10 rounded-full bg-gradient-webinar flex items-center justify-center">
+                      <Radio className="h-5 w-5 text-white animate-pulse" />
                     </div>
                     <div>
-                      <h3 className="font-semibold text-card-foreground">🔴 Live Webinar in Progress</h3>
+                      <div className="flex items-center gap-2">
+                        <h3 className="font-semibold text-card-foreground">Live Webinar in Progress</h3>
+                        <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800 animate-pulse">
+                          LIVE
+                        </span>
+                      </div>
                       <p className="text-sm text-muted-foreground">Join now to learn about our product!</p>
                     </div>
                   </div>
@@ -149,9 +154,9 @@ const WebinarWidget = ({ isLivePreview = false }: WebinarWidgetProps) => {
                   <div className="flex gap-2">
                     <Button
                       onClick={handleJoinWebinar}
-                      className="flex-1 bg-red-600 hover:bg-red-700 text-white font-medium animate-pulse"
+                      className="flex-1 bg-red-600 hover:bg-red-700 text-white font-medium"
                     >
-                      🔴 Join Live Webinar
+                      Join Live Webinar
                     </Button>
                     <Button
                       variant="outline"
