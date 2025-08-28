@@ -1,6 +1,10 @@
+import { useState } from "react";
 import WebinarWidget from "@/components/WebinarWidget";
+import { Button } from "@/components/ui/button";
 
 const Index = () => {
+  const [isLivePreview, setIsLivePreview] = useState(false);
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-background relative">
       <div className="text-center">
@@ -12,10 +16,21 @@ const Index = () => {
             Join our live sessions every weekday at 8:00 PM IST. 
             Get notified automatically when you visit our platform!
           </p>
+          <div className="mt-4 pt-4 border-t border-border">
+            <p className="text-xs text-muted-foreground mb-2">Preview Mode:</p>
+            <Button
+              onClick={() => setIsLivePreview(!isLivePreview)}
+              variant={isLivePreview ? "destructive" : "secondary"}
+              size="sm"
+              className="w-full"
+            >
+              {isLivePreview ? "🔴 Stop Live Preview" : "👁️ Preview Live State"}
+            </Button>
+          </div>
         </div>
       </div>
       
-      <WebinarWidget />
+      <WebinarWidget isLivePreview={isLivePreview} />
     </div>
   );
 };

@@ -2,7 +2,11 @@ import { useState, useEffect } from "react";
 import { MessageCircle, X, Calendar, Clock, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-const WebinarWidget = () => {
+interface WebinarWidgetProps {
+  isLivePreview?: boolean;
+}
+
+const WebinarWidget = ({ isLivePreview = false }: WebinarWidgetProps) => {
   const [showNotification, setShowNotification] = useState(false);
   const [autoTriggered, setAutoTriggered] = useState(false);
 
@@ -118,7 +122,7 @@ const WebinarWidget = () => {
 
             {/* Content */}
             <div className="relative z-10">
-              {isWebinarLive() ? (
+              {(isLivePreview || isWebinarLive()) ? (
                 // Live webinar state
                 <>
                   <div className="flex items-center gap-3 mb-4">
