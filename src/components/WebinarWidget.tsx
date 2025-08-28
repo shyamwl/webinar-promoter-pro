@@ -97,7 +97,11 @@ const WebinarWidget = ({ isLivePreview = false }: WebinarWidgetProps) => {
       <div className="fixed bottom-6 right-6 z-50">
         <Button
           onClick={handleToggleNotification}
-          className="h-14 w-14 rounded-full bg-gradient-webinar hover:bg-gradient-accent shadow-elegant animate-pulse-glow transition-all duration-300 hover:scale-110"
+          className={`h-14 w-14 rounded-full ${
+            (isLivePreview || isWebinarLive()) 
+              ? 'bg-gradient-live hover:bg-gradient-live' 
+              : 'bg-gradient-webinar hover:bg-gradient-accent'
+          } shadow-elegant animate-pulse-glow transition-all duration-300 hover:scale-110`}
         >
           <MessageCircle className="h-6 w-6 text-white animate-float" />
         </Button>
@@ -126,7 +130,7 @@ const WebinarWidget = ({ isLivePreview = false }: WebinarWidgetProps) => {
                 // Live webinar state
                 <>
                   <div className="flex items-center gap-3 mb-4">
-                    <div className="h-10 w-10 rounded-full bg-gradient-webinar flex items-center justify-center">
+                    <div className="h-10 w-10 rounded-full bg-gradient-live flex items-center justify-center">
                       <Radio className="h-5 w-5 text-white animate-pulse" />
                     </div>
                     <div>

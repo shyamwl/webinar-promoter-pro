@@ -71,7 +71,8 @@ export default {
 			},
 			backgroundImage: {
 				'gradient-webinar': 'var(--gradient-webinar)',
-				'gradient-accent': 'var(--gradient-accent)'
+				'gradient-accent': 'var(--gradient-accent)',
+				'gradient-live': 'var(--gradient-live)'
 			},
 			boxShadow: {
 				'glow': 'var(--shadow-glow)',

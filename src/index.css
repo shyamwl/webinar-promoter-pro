@@ -40,12 +40,14 @@ All colors MUST be HSL.
     --webinar-primary: 228 100% 59%;
     --webinar-secondary: 228 100% 59%;
     --webinar-accent: 228 100% 59%;
+    --webinar-live: 0 84% 60%;
     
-    --gradient-webinar: hsl(var(--webinar-primary));
-    --gradient-accent: hsl(var(--webinar-primary));
+    --gradient-webinar: linear-gradient(135deg, hsl(228 100% 59%), hsl(228 100% 59%));
+    --gradient-accent: linear-gradient(135deg, hsl(228 100% 59%), hsl(228 100% 59%));
+    --gradient-live: linear-gradient(135deg, hsl(0 84% 60%), hsl(0 84% 65%));
     
-    --shadow-glow: 0 0 40px hsl(var(--webinar-primary) / 0.3);
-    --shadow-elegant: 0 10px 30px -10px hsl(var(--webinar-primary) / 0.2);
+    --shadow-glow: 0 0 40px hsl(228 100% 59% / 0.3);
+    --shadow-elegant: 0 10px 30px -10px hsl(228 100% 59% / 0.2);
 
     --radius: 0.5rem;
 
